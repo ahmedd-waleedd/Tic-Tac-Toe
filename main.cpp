@@ -2,6 +2,7 @@
 //Dev-name : Mohamed Ahmed Hamed
 // UNI Name : FCAI-Cu-Egypt
 //Date : 21 / 9 / 2024
+//I am proud of my joining to FCAI Cu and thanks Dr.Mohamed El-Ramly from the heart <3
 
 #include "TicTacToe.h"
 #include <iostream>
