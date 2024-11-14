@@ -1,2 +1,2 @@
 # Tic-Tac-Toe.
-fast , first OOP project and hope it be good for my first 
+Fast , first OOP project and hope it be good for my first 
