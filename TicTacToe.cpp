@@ -127,3 +127,174 @@ void Player::DisplayInfo() {
 }
 
 void Player::IncreaseScore() { Score++; }
+
+
+
+
+bool check_H_contiguous_slots(const vector<string>& slots, int n, const vector<vector<string>>& matrix, int ridx, int cidx) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    // Check horizontal sequence
+    for (int start = max(0, cidx - n + 1); start <= min(cidx, cols - n); ++start) {
+        bool match = true;
+        for (int j = start; j < start + n; ++j) {
+            if (matrix[ridx][j] != slots[j-start]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) return true;
+    }
+
+    return false;
+}
+
+bool check_V_contiguous_slots(const vector<string>& slots, int n, const vector<vector<string>>& matrix, int ridx, int cidx) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    // Check vertical sequence
+    for (int start = max(0, ridx - n + 1); start <= min(ridx, rows - n); ++start) {
+        bool match = true;
+        for (int i = start; i < start + n; ++i) {
+            if (matrix[i][cidx] != slots[i-start]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) return true;
+    }
+
+    return false;
+}
+
+bool check_horizontal(const string& s, int n, const vector<vector<string>>& matrix, int ridx, int cidx) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+
+    // Check previous n slots
+    for (int j = 0; j < n; ++j) {
+        if (cidx - j >= 0 && matrix[ridx][cidx-j] != s) {
+            return false;
+        }
+    }
+
+    // Check next n slots
+    for (int j = 0; j < n; ++j) {
+        if (cidx + j >= cols && matrix[ridx][cidx+j] != s) {
+            return false;
+        }
+    }
+    return true;
+
+};
+
+bool check_vertical(const string& s, int n, const vector<vector<string>>& matrix, int ridx, int cidx) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+
+    for (int j = 0; j < n; ++j) {
+        if (ridx - j >= 0 && matrix[ridx-j][cidx] != s) {
+            return false;
+        }
+    }
+
+    // Check next n slots
+    for (int j = 0; j < n; ++j) {
+        if (ridx + j >= rows && matrix[ridx+j][cidx] != s) {
+            return false;
+        }
+    }
+    return true;
+
+};
+
+bool check_R_diagonal(const string& s, int n, const vector<vector<string>>& matrix, int ridx, int cidx) {
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    // Check previous n slots
+    for (int j = 0; j < n; ++j) {
+        if (cidx - j >= 0 && ridx- j >= 0  && matrix[ridx+j][cidx+j] != s) {
+            return false;
+        }
+    }
+
+    // Check next n slots
+    for (int j = 0; j < n; ++j) {
+        if (cidx + j >= cols && ridx+ j <= rows  && matrix[ridx-j][cidx-j] != s) {
+            return false;
+        }
+    }
+    return true;
+
+};
+
+int main() {
+
+    // Initialize a 5x5 matrix using vectors
+    vector<vector<string>> matrix = {
+        {"o", "x", "x", "o", "x"},
+        {"x", "x", "o", "x", "o"},
+        {"x", "x", "x", "o", "x"},
+        {"o", "x", "o", "x", "o"},
+        {"x", "o", "x", "x", "x"}
+    };
+    int rows = matrix.size();
+    int cols = matrix[0].size();
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            cout << matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    int c_rows, c_cols;
+
+    cout << "Enter the slot's row:";
+    cin >> c_rows;
+    cout << "Enter the slot's column:";
+    cin >> c_cols;
+
+    //vector<vector<string>> matrix(rows, vector<string>(cols));
+
+    cout<<endl;
+
+    string s = "x";
+    vector<string> f = {"x" , "x" , "x"};
+    if(check_horizontal(s, 3, matrix, c_rows, c_cols)) {
+        cout << "Win horizontal" << endl;
+    }
+    else if(check_H_contiguous_slots(f, 3, matrix, c_rows, c_cols)) {
+        cout << "Contiguous horizontal" << endl;
+    }
+    else if (check_vertical(s,3,matrix,c_rows, c_cols)) {
+        cout << "Win vertical" << endl;
+    }
+    else if(check_V_contiguous_slots(f, 3, matrix, c_rows, c_cols)) {
+        cout << "Contiguous vertical" << endl;
+    }
+    else if(check_R_diagonal(s, 3, matrix, c_rows, c_cols)) {
+        cout << "Win Right Diagonal" << endl;
+    }
+    else {
+        cout << "Lose" << endl;
+    }
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
